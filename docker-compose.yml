@@ -1,0 +1,24 @@
+version: '3.5'
+services:
+  app:
+    build: ./
+    image: &app app
+    restart: "no"
+    command: ["python", "app.py"]
+    environment: &env
+      - CELERY_BROKER_URL=filesystem://
+      - CELERY_BROKER_FOLDER=/app/broker
+    ports:
+      - 8000:5000
+    volumes:
+      - ./app:/app
+
+  worker:
+    build: ./
+    image: *app
+    restart: "no"
+    environment: *env
+    command: ["celery", "worker", "--app=worker.app", "--concurrency=1", "--hostname=worker@%h", "--loglevel=INFO"]
+    volumes:
+      - ./app:/app
+ 

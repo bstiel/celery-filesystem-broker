@@ -4,7 +4,8 @@ broker/
 __pycache__/
 *.py[cod]
 *$py.class
-
+control/
+./data
 # C extensions
 *.so
 
